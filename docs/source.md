@@ -1,10 +1,13 @@
 # Installation from source
 
-1. Verify that you have Go 1.26+ installed
+1. Verify that you have Go 1.24.11+ installed on `BigSurBackport`
 
    ```sh
    $ go version
    ```
+
+   Upstream `trunk` may require a newer Go release. This branch is the
+   compatibility backport line for older macOS / Go 1.24.x environments.
 
    If `go` is not installed, follow instructions on [the Go website](https://golang.org/doc/install).
 
