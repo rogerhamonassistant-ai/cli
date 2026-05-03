@@ -634,7 +634,9 @@ func FetchDescriptionsConcurrent(client *api.Client, host, owner, repo string, s
 
 	workers := min(maxWorkers, total)
 	for range workers {
-		wg.Go(func() {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
 			for s := range jobs {
 				s.Description = fetchDescription(client, host, owner, repo, s)
 
@@ -643,7 +645,7 @@ func FetchDescriptionsConcurrent(client *api.Client, host, owner, repo string, s
 					onProgress(d, total)
 				}
 			}
-		})
+		}()
 	}
 
 	for i := range skills {

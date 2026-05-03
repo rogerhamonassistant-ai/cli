@@ -99,7 +99,9 @@ func Install(opts *Options) (*Result, error) {
 
 	workers := min(maxConcurrency, total)
 	for range workers {
-		wg.Go(func() {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
 			for j := range jobs {
 				err := installSkill(opts, j.skill, targetDir)
 				results[j.idx] = skillResult{name: j.skill.InstallName(), err: err}
@@ -108,7 +110,7 @@ func Install(opts *Options) (*Result, error) {
 					opts.OnProgress(int(done.Add(1)), total)
 				}
 			}
-		})
+		}()
 	}
 
 	for i, s := range opts.Skills {

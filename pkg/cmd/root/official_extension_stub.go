@@ -1,7 +1,9 @@
 package root
 
 import (
+	"errors"
 	"fmt"
+	"os/exec"
 
 	"github.com/MakeNowJust/heredoc"
 	"github.com/cli/cli/v2/internal/prompter"
@@ -26,7 +28,7 @@ func NewCmdOfficialExtensionStub(io *iostreams.IOStreams, p prompter.Prompter, e
 		// cobra validation errors before reaching RunE.
 		DisableFlagParsing: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return officialExtensionStubRun(io, p, em, ext)
+			return officialExtensionStubRun(io, p, em, ext, args)
 		},
 	}
 
@@ -35,7 +37,7 @@ func NewCmdOfficialExtensionStub(io *iostreams.IOStreams, p prompter.Prompter, e
 	return cmd
 }
 
-func officialExtensionStubRun(io *iostreams.IOStreams, p prompter.Prompter, em extensions.ExtensionManager, ext *extensions.OfficialExtension) error {
+func officialExtensionStubRun(io *iostreams.IOStreams, p prompter.Prompter, em extensions.ExtensionManager, ext *extensions.OfficialExtension, args []string) error {
 	stderr := io.ErrOut
 
 	if !io.CanPrompt() {
@@ -68,5 +70,17 @@ func officialExtensionStubRun(io *iostreams.IOStreams, p prompter.Prompter, em e
 	}
 
 	fmt.Fprintf(stderr, "Successfully installed %s/%s\n", ext.Owner, ext.Repo)
+	dispatchArgs := append([]string{ext.Name}, args...)
+	found, err := em.Dispatch(dispatchArgs, io.In, io.Out, io.ErrOut)
+	if err != nil {
+		var execError *exec.ExitError
+		if errors.As(err, &execError) {
+			return &ExternalCommandExitError{execError}
+		}
+		return fmt.Errorf("failed to run extension: %w\n", err)
+	}
+	if !found {
+		return fmt.Errorf("failed to run extension: %s was not found after install\n", ext.Name)
+	}
 	return nil
 }

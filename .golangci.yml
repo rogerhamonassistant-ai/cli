@@ -37,6 +37,43 @@ linters:
           - bodyclose
           - gosec
   settings:
+    gomoddirectives:
+      # Backport compatibility pins are expected on this branch.
+      replace-allow-list:
+        - charm.land/bubbles/v2
+        - charm.land/bubbletea/v2
+        - charm.land/huh/v2
+        - charm.land/lipgloss/v2
+        - github.com/charmbracelet/colorprofile
+        - github.com/charmbracelet/ultraviolet
+        - github.com/charmbracelet/x/ansi
+        - github.com/cli/go-gh/v2
+        - github.com/docker/cli
+        - github.com/gdamore/tcell/v2
+        - github.com/google/go-containerregistry
+        - github.com/lucasb-eyer/go-colorful
+        - github.com/mattn/go-runewidth
+        - github.com/sigstore/rekor
+        - github.com/sigstore/sigstore
+        - github.com/sigstore/sigstore-go
+        - github.com/sigstore/timestamp-authority/v2
+        - github.com/theupdateframework/go-tuf/v2
+        - go.opentelemetry.io/otel
+        - go.opentelemetry.io/otel/metric
+        - go.opentelemetry.io/otel/sdk
+        - go.opentelemetry.io/otel/sdk/metric
+        - go.opentelemetry.io/otel/trace
+        - golang.org/x/crypto
+        - golang.org/x/mod
+        - golang.org/x/net
+        - golang.org/x/sync
+        - golang.org/x/sys
+        - golang.org/x/term
+        - golang.org/x/text
+        - golang.org/x/tools
+        - google.golang.org/genproto/googleapis/api
+        - google.golang.org/genproto/googleapis/rpc
+        - google.golang.org/grpc
     gocritic:
       disabled-checks:
         - appendAssign

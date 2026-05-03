@@ -6,6 +6,9 @@
 /share/zsh/vendor-completions
 /gh-cli
 .envrc
+.codex/
+.codex-maintenance.local.md
+BACKPORT_LEDGER.md
 /dist
 /site
 .github/**/node_modules
