@@ -14,9 +14,9 @@ import (
 
 	"math/rand"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/cli/cli/v2/internal/ghcmd"
 	"github.com/cli/go-internal/testscript"
-	"github.com/MakeNowJust/heredoc"
 )
 
 func ghMain() int {
@@ -182,6 +182,15 @@ func TestWorkflows(t *testing.T) {
 	testscript.Run(t, testScriptParamsFor(tsEnv, "workflow"))
 }
 
+func TestTelemetry(t *testing.T) {
+	var tsEnv testScriptEnv
+	if err := tsEnv.fromEnv(); err != nil {
+		t.Fatal(err)
+	}
+
+	testscript.Run(t, testScriptParamsFor(tsEnv, "telemetry"))
+}
+
 func testScriptParamsFor(tsEnv testScriptEnv, command string) testscript.Params {
 	var files []string
 	if tsEnv.script != "" {
@@ -225,6 +234,8 @@ func sharedSetup(tsEnv testScriptEnv) func(ts *testscript.Env) error {
 		ts.Setenv("GH_TOKEN", tsEnv.token)
 
 		ts.Setenv("RANDOM_STRING", randomString(10))
+
+		ts.Setenv("GH_TELEMETRY", "false")
 
 		// The sandbox overrides HOME, so git cannot find the user's global
 		// config. Write a minimal identity so commits inside the sandbox
@@ -433,4 +444,12 @@ func (e *testScriptEnv) fromEnv() error {
 	e.skipDefer = os.Getenv("GH_ACCEPTANCE_SKIP_DEFER") == "true"
 
 	return nil
+}
+
+func TestSkills(t *testing.T) {
+	var tsEnv testScriptEnv
+	if err := tsEnv.fromEnv(); err != nil {
+		t.Fatal(err)
+	}
+	testscript.Run(t, testScriptParamsFor(tsEnv, "skills"))
 }

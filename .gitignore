@@ -3,8 +3,12 @@
 /share/fish/vendor_completions.d
 /share/man/man1
 /share/zsh/site-functions
+/share/zsh/vendor-completions
 /gh-cli
 .envrc
+.codex/
+.codex-maintenance.local.md
+BACKPORT_LEDGER.md
 /dist
 /site
 .github/**/node_modules
@@ -38,3 +42,8 @@
 *~
 
 vendor/
+gh
+
+# Test coverage artifacts
+coverage.out
+lcov.info

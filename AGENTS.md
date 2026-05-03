@@ -2,6 +2,14 @@
 
 This is the GitHub CLI (`gh`), a command-line tool for interacting with GitHub. The module path is `github.com/cli/cli/v2`.
 
+## Public Repository Hygiene
+
+- Treat tracked files, commit messages, PR bodies, and review comments as public.
+- Keep machine-local coordination under ignored paths such as `.codex/` or `.codex-maintenance.local.md`.
+- Do not commit agent session identifiers, rollout paths, local usernames, home-directory paths, temporary paths, or local worktree names unless they are already part of upstream fixtures or intentional public examples.
+- Before committing docs, ledgers, handoff notes, or PR updates, scan changed tracked content for local identifiers such as `/Users/`, `/private/var/`, `.codex/sessions`, `rollout-`, and agent UUIDs.
+- Put private handoff detail in ignored local files; keep tracked docs limited to generic public process and reproducible commands.
+
 ## Build, Test, and Lint
 
 ```bash
@@ -135,6 +143,7 @@ for _, tt := range tests {
 - Add godoc comments to all exported functions, types, and constants
 - Avoid unnecessary code comments — only comment when the *why* isn't obvious from the code
 - Do not comment just to restate what the code does
+- Never use em dashes (—) in code, comments, or documentation; use regular dashes (-) or rewrite the sentence instead
 
 ## Error Handling
 
